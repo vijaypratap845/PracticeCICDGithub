@@ -1,0 +1,44 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+    - name: IIS Deploy
+  # You may pin to the exact commit or the version.
+  # uses: ChristopheLav/iis-deploy@3b6a141da6e1923a4af25e01734ab58c081f8444
+      uses: ChristopheLav/iis-deploy@v1.0.0
+      with:
+         dotnet-version: 6.0.x
+      # IIS website name
+         website-name: practicecicdgithub
+      # MS Deploy Service URL
+         msdeploy-service-url: http://localhost:81/
+      # Username used by Basic authentication to the MS Deploy Service
+         msdeploy-username: MCNDESKTOP35.mcnsolutions.net
+      # Password used by Basic authentication to the MS Deploy Service
+         msdeploy-password: Password$0011
+      # The path to the source directory that will be deployed
+         source-path: D:\PublishPracticeAPIs
