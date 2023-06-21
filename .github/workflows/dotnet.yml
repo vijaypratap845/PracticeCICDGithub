@@ -40,4 +40,4 @@ jobs:
       # Password used by Basic authentication to the MS Deploy Service
          msdeploy-password: Password$0011
       # The path to the source directory that will be deployed
-         source-path: D:\PublishPracticeAPIs
+         source-path: D:\PublishPracticeAPIs\publish
