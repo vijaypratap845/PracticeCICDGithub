@@ -26,3 +26,7 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - name: Build-Test-MSDeploy
+  # You may pin to the exact commit or the version.
+  # uses: RahulParmarRP/dotnet-build-test-msdeploy@aacabf39a0d334aae86e1882d6e82023c5d97795
+      uses: RahulParmarRP/dotnet-build-test-msdeploy@v0.1
