@@ -32,23 +32,7 @@ jobs:
       run: |
         $publishFolder = "./publish"
         $siteName = "practicecicdgithub"
-        $destinationFolder = "D:\PublishPracticeAPIs"
-
-        # Copy published files to the target folder
-        Copy-Item -Path $publishFolder -Destination $destinationFolder -Recurse -Force
-
-        # Import the WebAdministration module
-        Import-Module WebAdministration
-
-        # Check if the website already exists
-        $existingSite = Get-Website | Where-Object { $_.Name -eq $siteName }
-
-        if ($existingSite) {
-          # Update the existing website
-          Set-WebApplication -Name $siteName -Site 'Default Web Site' -PhysicalPath $destinationFolder
-        }
-        else {
-          # Create a new website
-          New-WebApplication -Name $siteName -Site 'Default Web Site' -PhysicalPath $destinationFolder
-         }
+        $msdeployPath = "C:/'Program Files'/IIS/'Microsoft Web Deploy V3'/msdeploy.exe"
+        $msdeployArgs = "-verb:sync -source:contentPath='$publishFolder' -dest:contentPath='IIS:\Sites\$siteName',computerName='localhost',username='YourUsername',password='YourPassword'"
+        Invoke-Expression "`"$msdeployPath`" $msdeployArgs"
 
