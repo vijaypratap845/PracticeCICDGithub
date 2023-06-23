@@ -15,7 +15,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0  # or the version you're using
+        dotnet-version: 6.0.x  # or the version you're using
 
     - name: Build and publish
       run: dotnet publish -c Release -o ./publish
