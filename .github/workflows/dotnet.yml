@@ -21,7 +21,7 @@ jobs:
       run: dotnet publish -c Release -o ./publish
 
     - name: Stop IIS Website
-      run: |
+      run:  |
         Import-Module WebAdministration
         Stop-WebSite -Name "practicecicdgithub" -ErrorAction SilentlyContinue
 
