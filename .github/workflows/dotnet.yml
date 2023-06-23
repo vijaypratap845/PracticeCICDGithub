@@ -25,4 +25,4 @@ jobs:
         uses: warrenbuckley/Deploy-IIS-App@v1.0.4
         with:
           Path: ./publish
-          WebsiteName: http://localhost:81/swagger/index.html  # Replace with the name of your IIS websit
+          WebsiteName: practicecicdgithub  # Replace with the name of your IIS websit
