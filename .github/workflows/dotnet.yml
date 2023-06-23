@@ -28,7 +28,7 @@ jobs:
     - name: Deploy to IIS
       run: |
         $siteName = "practicecicdgithub"
-        $sitePath = "D:\PublishPracticeAPIs"
+        $sitePath = "./publish"
         Remove-Item -Recurse -Force $sitePath\*
         Copy-Item -Recurse -Force ./publish/* $sitePath
         Import-Module WebAdministration
