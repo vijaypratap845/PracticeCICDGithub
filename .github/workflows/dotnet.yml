@@ -3,7 +3,7 @@ name: ASP.NET Core Web API Deploy
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build:
@@ -15,19 +15,22 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '6.0.x'  # or the version you're using
+        dotnet-version: 6.0.x  # or the version you're using
 
     - name: Build and publish
       run: dotnet publish -c Release -o ./publish
 
-    - name: Deploy to IIS
-      uses: microsoft/iis-actions/setup-iis@v1
-      with:
-        app-name: 'practicecicdgithub'
-        physical-path: './publish'  # path to the published output
+    - name: Stop IIS Website
+      run: |
+        Import-Module WebAdministration
+        Stop-WebSite -Name "practicecicdgithub" -ErrorAction SilentlyContinue
 
-    - name: Start the website
-      uses: microsoft/iis-actions/start-iis-website@v1
-      with:
-        app-name: 'practicecicdgithub'
+    - name: Deploy to IIS
+      run: |
+        $siteName = "practicecicdgithub"
+        $sitePath = "D:\PublishPracticeAPIs"
+        Remove-Item -Recurse -Force $sitePath\*
+        Copy-Item -Recurse -Force ./publish/* $sitePath
+        Import-Module WebAdministration
+        Start-WebSite -Name $siteName
 
