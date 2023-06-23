@@ -46,4 +46,4 @@ jobs:
         uses: warrenbuckley/Deploy-IIS-App@v1.0.4
         with:
           Path: ./publish
-          WebsiteName: practicecicdgithub  # Replace with the name of your IIS website
+          WebsiteName: practicecicdgithub  # Replace with the name of your IIS websit
