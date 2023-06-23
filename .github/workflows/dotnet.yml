@@ -50,5 +50,5 @@ jobs:
         else {
           # Create a new website
           New-WebApplication -Name $siteName -Site 'Default Web Site' -PhysicalPath $destinationFolder
-        }
+         }
 
