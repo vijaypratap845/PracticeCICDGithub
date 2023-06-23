@@ -26,8 +26,3 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
-    - name: Deploy to IIS
-      run: |
-        iisreset /stop
-        Copy-Item ./dotnetcorewebapp/* D:\PublishPracticeAPIs\PracticeCICDGithub -Recurse -Force
-        iisreset /start
