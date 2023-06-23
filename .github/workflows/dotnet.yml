@@ -27,7 +27,7 @@ jobs:
 
     - name: Deploy to IIS
       run: |
-        $siteName = practicecicdgithub
+        $siteName = "practicecicdgithub"
         $sitePath = ./publish
         Remove-Item -Recurse -Force $sitePath\*
         Copy-Item -Recurse -Force ./publish/* $sitePath
