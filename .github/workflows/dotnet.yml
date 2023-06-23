@@ -27,21 +27,10 @@ jobs:
 
     - name: Deploy to IIS
       run: |
+        $publishFolder = "$(System.DefaultWorkingDirectory)/publish"
         $siteName = "practicecicdgithub"
-        $sitePath = "./publish"
-        Remove-Item -Recurse -Force $sitePath\*
-        Copy-Item -Recurse -Force ./publish/* $sitePath
-        Import-Module WebAdministration
-        $pool = Get-ChildItem "IIS:\AppPools" | Where-Object { $_.Name -eq $siteName } -ErrorAction SilentlyContinue
-        if ($pool -eq $null) {
-          New-WebAppPool -Name $siteName
-        }
-        Set-ItemProperty "IIS:\AppPools\$siteName" -Name "managedRuntimeVersion" -Value ""
-        $site = Get-ChildItem "IIS:\Sites" | Where-Object { $_.Name -eq $siteName } -ErrorAction SilentlyContinue
-        if ($site -eq $null) {
-          New-WebSite -Name $siteName -PhysicalPath $sitePath -ApplicationPool $siteName
-        }
-        Start-WebAppPool -Name $siteName
-        Start-WebSite -Name $siteName
+        $msdeployPath = "C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe"
+        $msdeployArgs = "-verb:sync -source:contentPath='$publishFolder' -dest:contentPath='Default Web Site/$siteName',computerName='http://localhost',username='MCNDESKTOP35',password='Password$0011'"
+        Invoke-Expression "$msdeployPath $msdeployArgs"
 
 
