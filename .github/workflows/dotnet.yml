@@ -32,6 +32,15 @@ jobs:
         Remove-Item -Recurse -Force $sitePath\*
         Copy-Item -Recurse -Force ./publish/* $sitePath
         Import-Module WebAdministration
+        $pool = Get-WebAppPoolState -Name $siteName -ErrorAction SilentlyContinue
+        if ($pool -eq $null) {
+          New-WebAppPool -Name $siteName
+        }
+        Set-ItemProperty "IIS:\AppPools\$siteName" -Name "managedRuntimeVersion" -Value ""
+        if (-not (Test-Path "IIS:\Sites\$siteName")) {
+          New-WebSite -Name $siteName -PhysicalPath $sitePath -ApplicationPool $siteName
+        }
+        Start-WebAppPool -Name $siteName
         Start-WebSite -Name $siteName
 
 
