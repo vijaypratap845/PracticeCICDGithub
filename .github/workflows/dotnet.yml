@@ -3,7 +3,7 @@ name: ASP.NET Core Web API Deploy
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build:
@@ -15,13 +15,13 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x  # or the version you're using
+        dotnet-version: 6.0  # or the version you're using
 
     - name: Build and publish
       run: dotnet publish -c Release -o ./publish
 
     - name: Stop IIS Website
-      run:  |
+      run: |
         Import-Module WebAdministration
         Stop-WebSite -Name "practicecicdgithub" -ErrorAction SilentlyContinue
 
@@ -33,4 +33,5 @@ jobs:
         Copy-Item -Recurse -Force ./publish/* $sitePath
         Import-Module WebAdministration
         Start-WebSite -Name $siteName
+
 
