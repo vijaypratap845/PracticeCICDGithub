@@ -27,7 +27,7 @@ jobs:
 
     - name: Deploy to IIS
       run: |
-        $publishFolder = "./publish"
+        $publishFolder = "D:\PublishPracticeAPIs"
         $siteName = "practicecicdgithub"
         $msdeployPath = "C:/'Program Files'/IIS/'Microsoft Web Deploy V3'/msdeploy.exe"
         $msdeployArgs = "-verb:sync -source:contentPath='$publishFolder' -dest:contentPath='IIS:\Sites\$siteName',computerName='localhost',username='YourUsername',password='YourPassword'"
