@@ -18,6 +18,10 @@ namespace PracticeCICDGithub.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// This method is used to get all forecast data.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
