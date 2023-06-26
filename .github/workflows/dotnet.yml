@@ -20,6 +20,10 @@ jobs:
     - name: Create publish folder
       run: |
        mkdir ./publish
+    - name: Check workspace contents
+      run: |
+       ls -R ${{ github.workspace }}
+
 
     - name: Build and publish
       run:  dotnet publish -c Release -o ./publish
