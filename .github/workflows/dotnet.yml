@@ -31,5 +31,5 @@ jobs:
         $siteName = "practicecicdgithub"
         $msdeployPath = "C:/'Program Files'/IIS/'Microsoft Web Deploy V3'/msdeploy.exe"
         $msdeployArgs = "-verb:sync -source:contentPath='$publishFolder' -dest:contentPath='IIS:\Sites\$siteName',computerName='localhost',username='YourUsername',password='YourPassword'"
-        Invoke-Expression "`"$msdeployPath`" $msdeployArgs"
+        Invoke-Expression "$msdeployPath $msdeployArgs"
 
