@@ -23,6 +23,13 @@ jobs:
 
     - name: Build and publish
       run:  dotnet publish -c Release -o ./publish
+    - name: Create zip file
+      run: |
+       $publishFolder = "${{ github.workspace }}/publish"
+       $zipFile = "${{ github.workspace }}/publish.zip"
+    
+       Compress-Archive -Path $publishFolder -DestinationPath $zipFile
+
 
     - name: Stop IIS Website
       run: |
