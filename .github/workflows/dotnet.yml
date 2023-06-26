@@ -57,4 +57,4 @@ jobs:
     - name: Recycle application pool
       run: |
          $appPoolName = "DefaultAppPool"  # Replace with the name of your application pool
-         Invoke-Command -ScriptBlock { Import-Module WebAdministration; Restart-WebAppPool -Name $args[0] } -ArgumentList $appPoolName
+         Invoke-Command -ScriptBlock  { Import-Module WebAdministration; Restart-WebAppPool -Name $args[0] } -ArgumentList $appPoolName
