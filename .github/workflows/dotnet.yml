@@ -26,10 +26,25 @@ jobs:
         Stop-WebSite -Name "practicecicdgithub" -ErrorAction SilentlyContinue
 
     - name: Deploy to IIS
-      uses: SamKirkland/IIS-Web-App-Management@v3
-      with:
-        appPhysicalPath: 'D:\PublishPracticeAPIs'  # Replace with the actual physical path of your IIS website
-        appSiteName: 'practicecicdgithub'  # Replace with the name of your IIS website
-        package: './publish'
-        iisManagementUser: 'MCNDESKTOP35.mcnsolutions.net'  # Replace with your IIS management username
-        iisManagementPassword: 'Password$0011'  # Re
+      run: |
+        $publishFolder = "${{ github.workspace }}/publish"
+        $siteName = "practicecicdgithub"
+        $destinationFolder = "D:\PublishPracticeAPIs"
+
+        # Copy published files to the target folder
+        Copy-Item -Path $publishFolder -Destination $destinationFolder -Recurse -Force
+
+        # Import the WebAdministration module
+        Import-Module WebAdministration
+
+        # Check if the website already exists
+        $existingSite = Get-Website | Where-Object { $_.Name -eq $siteName }
+
+        if ($existingSite) {
+          # Update the existing website
+          Set-WebApplication -Name $siteName -Site 'Default Web Site' -PhysicalPath $destinationFolder
+        }
+        else {
+          # Create a new website
+          New-WebApplication -Name $siteName -Site 'Default Web Site' -PhysicalPath $destinationFolder
+        }
