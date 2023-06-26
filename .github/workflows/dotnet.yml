@@ -41,6 +41,6 @@ jobs:
           New-WebApplication -Name $siteName -Site 'Default Web Site' -PhysicalPath $destinationFolder
     - name: Recycle application pool
       run: |
-        $appPoolName = "DefaultAppPool"  # Replace with the name of your application pool
-        Invoke-Command -ScriptBlock { Import-Module WebAdministration; Restart-WebAppPool -Name $args[0] } -ArgumentList $appPoolName
+         $appPoolName = "DefaultAppPool"  # Replace with the name of your application pool
+         Invoke-Command -ScriptBlock { Import-Module WebAdministration; Restart-WebAppPool -Name $args[0] } -ArgumentList $appPoolName
 
