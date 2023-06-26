@@ -28,7 +28,7 @@ jobs:
     - name: Ensure Web Deployment Agent Service is running
       run:  sc query msdepsvc
 
-    - name: Deploy to IIS
+    - name:  Deploy to IIS
       run: |
         $publishFolder = "./publish"
         $siteName = "practicecicdgithub"
