@@ -26,10 +26,10 @@ jobs:
         Stop-WebSite -Name "practicecicdgithub" -ErrorAction SilentlyContinue
 
     - name: Deploy to IIS
-      run: |
-        $publishFolder = "D:\a\PracticeCICDGithub\PracticeCICDGithub\publish\"
-        $siteName = "practicecicdgithub"
-        $msdeployPath = "C:/'Program Files'/IIS/'Microsoft Web Deploy V3'/msdeploy.exe"
-        $msdeployArgs = "-verb:sync -source:contentPath='$publishFolder' -dest:contentPath='IIS:\Sites\$siteName',computerName='localhost',username='YourUsername',password='YourPassword'"
-        Invoke-Expression "$msdeployPath $msdeployArgs"
-
+      uses: SamKirkland/IIS-Web-App-Management@v3
+      with:
+        appPhysicalPath: 'D:\PublishPracticeAPIs'  # Replace with the actual physical path of your IIS website
+        appSiteName: 'practicecicdgithub'  # Replace with the name of your IIS website
+        package: './publish'
+        iisManagementUser: 'MCNDESKTOP35.mcnsolutions.net'  # Replace with your IIS management username
+        iisManagementPassword: 'Password$0011'  # Re
