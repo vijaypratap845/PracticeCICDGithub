@@ -1,0 +1,41 @@
+name: ASP.NET Core Web API Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x  # or the version you're using
+
+    - name: Build and publish
+      run: dotnet publish -c Release -o ./publish
+
+    - name: Stop IIS Website
+      run: |
+        Import-Module WebAdministration
+        Stop-WebSite -Name "practicecicdgithub" -ErrorAction SilentlyContinue
+
+    - name: Deploy to IIS
+      run: |
+        $publishFolder = "${{ github.workspace }}/publish"
+        $siteName = "practicecicdgithub"
+        $destinationFolder = "D:\PublishPracticeAPIs"
+
+        # Copy published files to the target folder
+        Copy-Item -Path $publishFolder -Destination $destinationFolder -Recurse -Force
+
+        # Import the WebAdministration module
+        Import-Module WebAdministration
+
+          # Create a new website
+          New-WebApplication -Name $siteName -Site 'Default Web Site' -PhysicalPath $destinationFolder
