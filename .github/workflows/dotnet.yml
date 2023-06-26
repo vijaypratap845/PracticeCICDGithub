@@ -18,7 +18,7 @@ jobs:
         dotnet-version: 6.0.x  # or the version you're using
 
     - name: Build and publish
-      run: dotnet publish -c Release -o ./publish
+      run:  dotnet publish -c Release -o ./publish
 
     - name: Stop IIS Website
       run: |
