@@ -42,19 +42,12 @@ jobs:
 
     - name: Deploy to IIS
       run: |
+
         $publishFolder = "${{ github.workspace }}/publish"
-        $siteName = "practicecicdgithub"
-        $destinationFolder = "D:\PublishPracticeAPIs"
+        $siteName = "practicecicdgithub"  # Replace with your website name in IIS
 
-        # Copy published files to the target folder
-        Copy-Item -Path $publishFolder -Destination $destinationFolder -Recurse -Force
-
-        # Import the WebAdministration module
+        Add-WindowsFeature Web-WebServer
         Import-Module WebAdministration
-
-          # Create a new website
-          New-WebApplication -Name $siteName -Site 'Default Web Site' -PhysicalPath $destinationFolder
-    - name: Recycle application pool
-      run: |
-         $appPoolName = "DefaultAppPool"  # Replace with the name of your application pool
-         Invoke-Command -ScriptBlock  { Import-Module WebAdministration; Restart-WebAppPool -Name $args[0] } -ArgumentList $appPoolName
+        New-WebAppPool -Name "practicecicdgithub" -Force
+        Set-ItemProperty "IIS:\AppPools\YourAppPoolName" -Name managedRuntimeVersion -Value ''
+        New-Website -Name $siteName -Port 80 -PhysicalPath $publishFolder -ApplicationPool "practicecicdgithub"
