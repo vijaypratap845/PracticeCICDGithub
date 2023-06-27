@@ -37,17 +37,26 @@ jobs:
 
     - name: Stop IIS Website
       run: |
-        Import-Module WebAdministration
+        Import-Module -SkipEditionCheck
         Stop-WebSite -Name "practicecicdgithub" -ErrorAction SilentlyContinue
 
     - name: Deploy to IIS
       run: |
-
         $publishFolder = "${{ github.workspace }}/publish"
         $siteName = "practicecicdgithub"  # Replace with your website name in IIS
+        $appPoolName = "practicecicdgithub"  # Replace with your application pool name in IIS
 
-        Add-WindowsFeature Web-WebServer
-        Import-Module WebAdministration
-        New-WebAppPool -Name "practicecicdgithub" -Force
-        Set-ItemProperty "IIS:\AppPools\YourAppPoolName" -Name managedRuntimeVersion -Value ''
-        New-Website -Name $siteName -Port 80 -PhysicalPath $publishFolder -ApplicationPool "practicecicdgithub"
+        Import-Module -SkipEditionCheck
+        $appPoolPath = "IIS:\AppPools\$appPoolName"
+        if (-not (Test-Path $appPoolPath)) {
+          New-Item -Path $appPoolPath -Force
+        }
+        Set-ItemProperty -Path $appPoolPath -Name "managedRuntimeVersion" -Value ''
+        Start-WebAppPool -Name $appPoolName
+
+        $sitePath = "IIS:\Sites\$siteName"
+        if (-not (Test-Path $sitePath)) {
+          New-WebSite -Name $siteName -PhysicalPath $publishFolder -ApplicationPool $appPoolName -Port 81
+        } else {
+          Set-WebSite -Name $siteName -PhysicalPath $publishFolder -ApplicationPool $appPoolName
+        }
