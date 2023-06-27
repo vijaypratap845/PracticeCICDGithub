@@ -37,7 +37,7 @@ jobs:
 
     - name: Stop IIS Website
       run: |
-        Import-Module -SkipEditionCheck
+        Import-Module WebAdministration
         Stop-WebSite -Name "practicecicdgithub" -ErrorAction SilentlyContinue
 
     - name: Deploy to IIS
@@ -46,7 +46,7 @@ jobs:
         $siteName = "practicecicdgithub"  # Replace with your website name in IIS
         $appPoolName = "practicecicdgithub"  # Replace with your application pool name in IIS
 
-        Import-Module -SkipEditionCheck
+        Import-Module WebAdministration
         $appPoolPath = "IIS:\AppPools\$appPoolName"
         if (-not (Test-Path $appPoolPath)) {
           New-Item -Path $appPoolPath -Force
