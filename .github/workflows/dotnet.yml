@@ -16,9 +16,27 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x  # or the version you're using
+        
+    - name: Create publish folder
+      run: |
+       mkdir ./publish
+    - name: Check workspace contents
+      run: |
+       ls -R ${{ github.workspace }}
+
 
     - name: Build and publish
-      run: dotnet publish -c Release -o ./publish
+      run:  dotnet publish -c Release -o ./publish
+    - name: Verify build output
+      run: |
+       ls -R ./publish
+    - name: Create zip file
+      run: |
+       $publishFolder = "${{ github.workspace }}/publish"
+       $zipFile = "${{ github.workspace }}/publish.zip"
+    
+       Compress-Archive -Path $publishFolder -DestinationPath $zipFile
+
 
     - name: Stop IIS Website
       run: |
@@ -33,9 +51,16 @@ jobs:
 
         # Copy published files to the target folder
         Copy-Item -Path $publishFolder -Destination $destinationFolder -Recurse -Force
-
-        # Import the WebAdministration module
-        Import-Module WebAdministration
+        
+          # Import the WebAdministration module
+          Import-Module WebAdministration
 
           # Create a new website
           New-WebApplication -Name $siteName -Site 'Default Web Site' -PhysicalPath $destinationFolder
+    - name: Verify copied files
+      run: |
+          ls -R $destinationFolder
+    - name: Recycle application pool
+      run: |
+         $appPoolName = "DefaultAppPool"  # Replace with the name of your application pool
+         Invoke-Command -ScriptBlock { Import-Module WebAdministration; Restart-WebAppPool -Name $args[0] } -ArgumentList $appPoolName
