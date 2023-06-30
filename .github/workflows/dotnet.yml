@@ -51,15 +51,15 @@ jobs:
 
         # Copy published files to the target folder
         Copy-Item -Path $publishFolder -Destination $destinationFolder -Recurse -Force
-    - name: Verify copied files
-      run: |
-          ls -R $destinationFolder
-          
+        
           # Import the WebAdministration module
           Import-Module WebAdministration
 
           # Create a new website
           New-WebApplication -Name $siteName -Site 'Default Web Site' -PhysicalPath $destinationFolder
+    - name: Verify copied files
+      run: |
+          ls -R $destinationFolder
     - name: Recycle application pool
       run: |
          $appPoolName = "DefaultAppPool"  # Replace with the name of your application pool
